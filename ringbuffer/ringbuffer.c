@@ -76,11 +76,11 @@ void ringbuffer_clear(ringbuffer_t *rb) {
 
 int ringbuffer_push(ringbuffer_t *rb, void *item) {
   if (!rb || !item) {
-    return -1;
+    return RINGBUFFER_INVALID;
   }
 
-  if ( (rb->_count == rb->_capacity) && !(rb->_options & RINGBUFFER_OVERWRITE) ) {
-    return 0;
+  if ( (rb->_count == rb->_capacity) && !(rb->_options & RINGBUFFER_OPT_OVERWRITE) ) {
+    return RINGBUFFER_FULL;
   }
 
   memcpy(rb->_head, item, rb->_data_sz);
@@ -99,18 +99,18 @@ int ringbuffer_push(ringbuffer_t *rb, void *item) {
     ++rb->_count;  // Count must be less than capacity.
   }
 
-  return 1;
+  return RINGBUFFER_OK;
 }
 
 
 
 int ringbuffer_pop(ringbuffer_t *rb, void *item){
   if (!rb || !item) {
-    return 0;
+    return RINGBUFFER_INVALID;
   }
 
   if (rb->_count == 0) {
-    return 0;
+    return RINGBUFFER_EMPTY;
   }
 
   if (item != NULL) {
@@ -125,7 +125,7 @@ int ringbuffer_pop(ringbuffer_t *rb, void *item){
 
   --rb->_count;
 
-  return 1;
+  return RINGBUFFER_OK;
 }
 
 size_t ringbuffer_count(ringbuffer_t *rb) {

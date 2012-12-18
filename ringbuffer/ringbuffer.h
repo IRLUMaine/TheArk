@@ -4,7 +4,13 @@
 #include <stdlib.h>
 #include <stdint.h>
 
-#define RINGBUFFER_OVERWRITE       0x00000001
+#define RINGBUFFER_OPT_NONE        0x00000000
+#define RINGBUFFER_OPT_OVERWRITE   0x00000001
+
+#define RINGBUFFER_OK           0
+#define RINGBUFFER_EMPTY        1
+#define RINGBUFFER_FULL         2
+#define RINGBUFFER_INVALID      3
 
 typedef struct ringbuffer {
   void      *_buffer;
