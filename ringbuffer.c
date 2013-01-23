@@ -79,8 +79,12 @@ int ringbuffer_push(ringbuffer_t * const rb, void const * const item) {
     return RINGBUFFER_INVALID;
   }
 
-  if ( (rb->_count == rb->_capacity) && !(rb->_options & RINGBUFFER_OPT_OVERWRITE) ) {
-    return RINGBUFFER_FULL;
+  if ( (rb->_count == rb->_capacity) ) {
+    if ( rb->_options & RINGBUFFER_OPT_OVERWRITE ) {
+      ringbuffer_pop(rb, NULL);  //Make room for new item.
+    } else {
+      return RINGBUFFER_FULL;
+    }
   }
 
   memcpy(rb->_head, item, rb->_data_sz);
@@ -89,23 +93,15 @@ int ringbuffer_push(ringbuffer_t * const rb, void const * const item) {
   if (rb->_head == rb->_buffer_end) {
     rb->_head = rb->_buffer;
   }
-
-  if (rb->_count == rb->_capacity) {  // If we just overwrote the tail, update tail pointer.
-    rb->_tail = (char*)rb->_tail + rb->_data_sz;
-    if (rb->_tail == rb->_buffer_end) {
-      rb->_tail = rb->_buffer;
-    }
-  } else {
-    ++rb->_count;  // Count must be less than capacity.
-  }
-
+  ++rb->_count;
+  
   return RINGBUFFER_OK;
 }
 
 
 
 int ringbuffer_pop(ringbuffer_t * const rb, void * const item){
-  if (!rb || !item) {
+  if (!rb) {
     return RINGBUFFER_INVALID;
   }
 
