@@ -5,7 +5,7 @@
 #define NEED_TO_FREE_BUFFER     0x00000002
 
 
-ringbuffer_t* ringbuffer_init(ringbuffer_t* rb, size_t data_sz, size_t capacity, void* storage, uint32_t options) {
+ringbuffer_t* ringbuffer_init(ringbuffer_t *rb, size_t const data_sz, size_t const capacity, void const * const storage, uint32_t const options) {
 
   if (rb == NULL) {
     rb = malloc(sizeof(ringbuffer_t));
@@ -20,7 +20,7 @@ ringbuffer_t* ringbuffer_init(ringbuffer_t* rb, size_t data_sz, size_t capacity,
   }
 
   if (storage != NULL) {
-    rb->_buffer = storage;
+    rb->_buffer = (void *)storage;
   } else {
     rb->_buffer = malloc(data_sz * capacity);
     if (rb->_buffer == NULL) {
@@ -64,7 +64,7 @@ void ringbuffer_free(ringbuffer_t *rb) {
   return;
 }
 
-void ringbuffer_clear(ringbuffer_t *rb) {
+void ringbuffer_clear(ringbuffer_t * const rb) {
   if (rb) {
     rb->_count = 0;
     rb->_head = rb->_buffer;
@@ -74,7 +74,7 @@ void ringbuffer_clear(ringbuffer_t *rb) {
 }
 
 
-int ringbuffer_push(ringbuffer_t *rb, void *item) {
+int ringbuffer_push(ringbuffer_t * const rb, void const * const item) {
   if (!rb || !item) {
     return RINGBUFFER_INVALID;
   }
@@ -104,7 +104,7 @@ int ringbuffer_push(ringbuffer_t *rb, void *item) {
 
 
 
-int ringbuffer_pop(ringbuffer_t *rb, void *item){
+int ringbuffer_pop(ringbuffer_t * const rb, void * const item){
   if (!rb || !item) {
     return RINGBUFFER_INVALID;
   }
@@ -128,7 +128,7 @@ int ringbuffer_pop(ringbuffer_t *rb, void *item){
   return RINGBUFFER_OK;
 }
 
-size_t ringbuffer_count(ringbuffer_t *rb) {
+size_t ringbuffer_count(ringbuffer_t const * const rb) {
   if (!rb) {
     return 0;
   }

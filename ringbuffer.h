@@ -29,16 +29,16 @@ typedef struct ringbuffer {
 
 
 
-ringbuffer_t* ringbuffer_init(ringbuffer_t *rb, size_t data_sz, size_t capacity, void *storage, uint32_t options);
+ringbuffer_t* ringbuffer_init(ringbuffer_t *rb, size_t const data_sz, size_t const capacity, void const * const storage, uint32_t const options);
 
 void ringbuffer_free(ringbuffer_t *rb);
 
-void ringbuffer_clear(ringbuffer_t *rb);
+void ringbuffer_clear(ringbuffer_t * const rb);
 
-int ringbuffer_push(ringbuffer_t *rb, void *item);
+int ringbuffer_push(ringbuffer_t * const rb, void const * const item);
 
-int ringbuffer_pop(ringbuffer_t *rb, void *item);
+int ringbuffer_pop(ringbuffer_t * const rb, void * const item);
 
-size_t ringbuffer_count(ringbuffer_t *rb);
+size_t ringbuffer_count(ringbuffer_t const * const rb);
 
 #endif
